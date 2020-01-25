@@ -2,12 +2,10 @@ import 'dart:convert';
 
 import 'package:atantat_flutter/network/service.dart';
 import 'package:atantat_flutter/widget/DropDown.dart';
-import 'dart:developer' as developer;
+import 'package:atantat_flutter/widget/LoginWidget.dart';
 import 'package:chopper/chopper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:getflutter/components/button/gf_button.dart';
 import 'package:provider/provider.dart';
 
 void main() => runApp(ATanTat());
@@ -15,36 +13,27 @@ void main() => runApp(ATanTat());
 class ATanTat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final TextEditingController emailController = new TextEditingController();
+    final TextEditingController passwordController = new TextEditingController();
+
     return Provider(
-      // The initialized PostApiService is now available down the widget tree
       create: (_) => service.create(),
-      // Always call dispose on the ChopperClient to release resources
       dispose: (context, service service) => service.client.dispose(),
       child: MaterialApp(
-        title: 'Material App',
-        home: HomePage(),
+        home: LoginWidget(),
       ),
     );
+
   }
 }
   class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Chopper Blog'),
-      ),
       body: _buildBody(context),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        // onPressed: () async {
-        //   // The JSONPlaceholder API always responds with whatever was passed in the POST request
-        //   final response = await Provider.of<service>(context)
-        //       .getMajor();
-        //   // We cannot really add any new posts using the placeholder API,
-        //   // so just print the response to the console
-        //   print(response.body);
-        // },
+
       ),
     );
   }
@@ -64,8 +53,12 @@ class ATanTat extends StatelessWidget {
            var majors=json.decode(snapshot.data.bodyString);
            var testing=majors["data"];
            final List major=testing;
+           List<String> gg=[];
+           for(var i=0;i<major.length;i++){
+             gg.add(major[i]["name"]);
+           }
+           return DropDown(gg);
 
-            return _buildPosts(context,major);
         } else {
           // Show a loading indicator while waiting for the posts
           return Center(
@@ -77,25 +70,25 @@ class ATanTat extends StatelessWidget {
   }
 
 
-  ListView _buildPosts(BuildContext context, List posts) {
-    return ListView.builder(
-      itemCount: posts.length,
-      padding: EdgeInsets.all(8),
-      itemBuilder: (context, index) {
-        return Card(
-          elevation: 4,
-          child: ListTile(
-            title: Text(
-              posts[index]['name'],
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            
-            
-          ),
-        );
-      },
-    );
-  }
+//  ListView _buildPosts(BuildContext context, List posts) {
+//    return ListView.builder(
+//      itemCount: posts.length,
+//      padding: EdgeInsets.all(8),
+//      itemBuilder: (context, index) {
+//        return Card(
+//          elevation: 4,
+//          child: ListTile(
+//            title: Text(
+//              posts[index]['name'],
+//              style: TextStyle(fontWeight: FontWeight.bold),
+//            ),
+//
+//
+//          ),
+//        );
+//      },
+//    );
+//  }
 
 
 

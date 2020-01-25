@@ -1,17 +1,37 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class DropDown extends StatefulWidget {
+
+  final List<String> majors;
+  DropDown(List<String> majors):this.majors=majors;
+//  const DropDown({Key key,this.majors}): super(key:key);
+
   @override
-  DropDownWidget createState() => DropDownWidget();
+  DropDownWidget createState() => DropDownWidget(majors);
 }
 
-class DropDownWidget extends State {
-  String dropDownValue = "One";
+class DropDownWidget extends State<DropDown> {
+
   //get the list of the string from api
-  List<String> spinnerItems = ['One', 'Two', 'Three', 'Four', 'Five'];
+  List<String> majors;
+  String dropDownValue;
+
+  //get the list of the string from api
+
+  DropDownWidget(this.majors){
+    this.majors=majors;
+    dropDownValue=majors[0];
+  }
+
+
   @override
   Widget build(BuildContext context) {
+
+
+    //String dropDownValue=widget.majors[0];
+//    List<String> list=widget.majors;
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
@@ -34,9 +54,18 @@ class DropDownWidget extends State {
               onChanged: (String data) {
                 setState(() {
                   dropDownValue = data;
+                  Fluttertoast.showToast(
+                      msg: dropDownValue.toString(),
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIos: 1,
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16.0
+                  );
                 });
               },
-              items: spinnerItems.map<DropdownMenuItem<String>>((String value) {
+              items: majors.map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
                   child: Text(value),
